@@ -1,0 +1,25 @@
+{
+  "name": "audio-recorder",
+  "version": "1.0.0",
+  "description": "Transfer audio streams using WebRTC and Websocket",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Haojen/npm-audio-recorder.git"
+  },
+  "keywords": [
+    "WebRTC",
+    "Recorder",
+    "Audio",
+    "Websocket"
+  ],
+  "author": "haojenma",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Haojen/npm-audio-recorder/issues"
+  },
+  "homepage": "https://github.com/Haojen/npm-audio-recorder#readme"
+}
