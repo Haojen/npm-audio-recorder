@@ -1,21 +1,19 @@
 var worker = require('./worker')
-var AudioCtx,
-    Recorder,
-    RECWorker,
-    onStreamProcessor;
 
 var rec = function(stream, config) {
     this.AudioCtx = this.gotStream(stream)
     this.RECWorker = this._importWorker()
 }
 
+rec.prototype.onStreamProcessor = null
+
 rec.prototype.gotStream = function(stream) {
     const audioContext = new AudioContext()
-    const inputPoint = audioContext.createGain();
-    const audioInput = audioContext.createMediaStreamSource(stream);
+    const inputPoint = audioContext.createGain()
+    const audioInput = audioContext.createMediaStreamSource(stream)
     audioInput.connect(inputPoint);
 
-    const analyserNode = audioContext.createAnalyser();
+    const analyserNode = audioContext.createAnalyser()
     analyserNode.fftSize = 2048;
     inputPoint.connect(analyserNode);
 
