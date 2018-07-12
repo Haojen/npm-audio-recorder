@@ -1,6 +1,6 @@
 {
   "name": "audio-recorder",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Transfer audio streams using WebRTC and Websocket",
   "main": "index.js",
   "scripts": {
