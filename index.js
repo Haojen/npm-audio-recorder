@@ -1,17 +1,23 @@
 var worker = require('./worker')
 
-var rec = function(stream, config) {
-    this.AudioCtx = this.gotStream(stream)
+function Recorders(stream, config) {
+    this.config = {
+        exportAudio: config.exportAudio,
+    }
+
+    this.AudioCtx = this._gotStream(stream)
     this.RECWorker = this._importWorker()
 }
 
-rec.prototype.onStreamProcessor = null
+Recorders.prototype.onStreamProcessor = null
+Recorders.prototype.onReceiveAudioBlob = null
 
-rec.prototype.gotStream = function(stream) {
+Recorders.prototype._gotStream = function(stream) {
     const audioContext = new AudioContext()
     const inputPoint = audioContext.createGain()
     const audioInput = audioContext.createMediaStreamSource(stream)
     audioInput.connect(inputPoint);
+
 
     const analyserNode = audioContext.createAnalyser()
     analyserNode.fftSize = 2048;
@@ -20,12 +26,12 @@ rec.prototype.gotStream = function(stream) {
     return inputPoint
 }
 
-rec.prototype._importWorker = function() {
+Recorders.prototype._importWorker = function() {
     const blob = new Blob([worker], { type: 'application/javascript' })
     return new Worker(window.URL.createObjectURL(blob))
 }
 
-rec.prototype.startRecord = function(config = {}) {
+Recorders.prototype.startRecord = function(config = {}) {
     const recorder = this.AudioCtx.context.createScriptProcessor(1024, 1, 1)
     this.AudioCtx.connect(recorder)
     recorder.connect(this.AudioCtx.context.destination)
@@ -59,10 +65,12 @@ rec.prototype.startRecord = function(config = {}) {
                 this.onStreamProcessor && this.onStreamProcessor(outputArray.buffer)
                 count = 0;
             }
+            return
         }
 
-
-
+        if (e.data.command === 'blob') {
+            this.onReceiveAudioBlob && this.onReceiveAudioBlob(e.data.blob)
+        }
     }
 
     recorder.onaudioprocess =  (e) => {
@@ -76,13 +84,18 @@ rec.prototype.startRecord = function(config = {}) {
     this.Recorder = recorder
 }
 
-rec.prototype.stopRecord = function() {
+Recorders.prototype.stopRecord = function() {
+    if (this.config.exportAudio && this.config.exportAudio === 'wav') {
+        this.RECWorker.postMessage({command: 'exportAudio'})
+    }
     this.Recorder.disconnect()
 }
 
-rec.prototype.clear = function() {
+Recorders.prototype.clear = function() {
     this.RECWorker.postMessage({command: 'reset'});
 }
 
 
-module.exports = rec
+
+
+module.exports = Recorders
