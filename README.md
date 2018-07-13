@@ -39,14 +39,10 @@ npm install audio-recorders
 ## Config
 
 1. exportAudio: wav // If you want to export wav audio
->>>>>>> a6243866362765188d54b33ca57e575c1e09f905
 
 ## Methods
 
 ### startRecord
-<<<<<<< HEAD
-### stopRecord
-=======
 Start the recording
 
 ### stopRecord
