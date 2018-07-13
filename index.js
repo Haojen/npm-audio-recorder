@@ -1,6 +1,7 @@
 var worker = require('./worker')
 
 function Recorders(stream, config) {
+    var config = config || {}
     this.config = {
         exportAudio: config.exportAudio,
     }
