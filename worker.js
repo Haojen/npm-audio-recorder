@@ -213,7 +213,6 @@ function Resampler(fromSampleRate, toSampleRate, channels, outputBufferSize, noR
 }
 Resampler.prototype.initialize = function () {
     //Perform some checks:
-    console.log(this.fromSampleRate, this.toSampleRate, this.channels)
     if (this.fromSampleRate > 0 && this.toSampleRate > 0 && this.channels > 0) {
         if (this.fromSampleRate == this.toSampleRate) {
             //Setup a resampler bypass:

@@ -62,7 +62,6 @@ Recorders.prototype.startRecord = function(config = {}) {
                     outputArray.set(output[i], i * 320);
                 }
 
-                console.log(outputArray.buffer)
                 this.onStreamProcessor && this.onStreamProcessor(outputArray.buffer)
                 count = 0;
             }
