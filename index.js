@@ -88,7 +88,8 @@ Recorders.prototype.stopRecord = function() {
     if (this.config.exportAudio && this.config.exportAudio === 'wav') {
         this.RECWorker.postMessage({command: 'exportAudio', type: 'wav'})
     }
-    this.Recorder.disconnect()
+
+    this.Recorder && this.Recorder.disconnect()
 }
 
 Recorders.prototype.clear = function() {
