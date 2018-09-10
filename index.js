@@ -8,6 +8,7 @@ function Recorders(stream, config) {
 
     this.AudioCtx = this._gotStream(stream)
     this.RECWorker = this._importWorker()
+    this._init(config)
 }
 
 Recorders.prototype.onStreamProcessor = null
@@ -32,10 +33,9 @@ Recorders.prototype._importWorker = function() {
     return new Worker(window.URL.createObjectURL(blob))
 }
 
-Recorders.prototype.startRecord = function(config = {}) {
+Recorders.prototype._init = function(config = {}) {
     const recorder = this.AudioCtx.context.createScriptProcessor(1024, 1, 1)
     this.AudioCtx.connect(recorder)
-    recorder.connect(this.AudioCtx.context.destination)
 
     this.RECWorker.postMessage({
         command: 'init',
@@ -82,6 +82,10 @@ Recorders.prototype.startRecord = function(config = {}) {
 
 
     this.Recorder = recorder
+}
+
+Recorders.prototype.startRecord = function() {
+    this.Recorder.connect(this.AudioCtx.context.destination)
 }
 
 Recorders.prototype.stopRecord = function() {
