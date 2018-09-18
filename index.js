@@ -32,7 +32,7 @@ Recorders.prototype._importWorker = function() {
     return new Worker(window.URL.createObjectURL(blob))
 }
 
-Recorders.prototype.startRecord = function(config = {}) {
+Recorders.prototype.startRecord = function(config) {
     var recorder = this.AudioCtx.context.createScriptProcessor(1024, 1, 1)
     this.AudioCtx.connect(recorder)
     recorder.connect(this.AudioCtx.context.destination)
