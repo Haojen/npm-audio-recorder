@@ -14,13 +14,13 @@ Recorders.prototype.onStreamProcessor = null
 Recorders.prototype.onReceiveAudioBlob = null
 
 Recorders.prototype._gotStream = function(stream) {
-    const audioContext = new AudioContext()
-    const inputPoint = audioContext.createGain()
-    const audioInput = audioContext.createMediaStreamSource(stream)
+    var audioContext = new AudioContext()
+    var inputPoint = audioContext.createGain()
+    var audioInput = audioContext.createMediaStreamSource(stream)
     audioInput.connect(inputPoint);
 
 
-    const analyserNode = audioContext.createAnalyser()
+    var analyserNode = audioContext.createAnalyser()
     analyserNode.fftSize = 2048;
     inputPoint.connect(analyserNode);
 
@@ -28,12 +28,12 @@ Recorders.prototype._gotStream = function(stream) {
 }
 
 Recorders.prototype._importWorker = function() {
-    const blob = new Blob([worker], { type: 'application/javascript' })
+    var blob = new Blob([worker], { type: 'application/javascript' })
     return new Worker(window.URL.createObjectURL(blob))
 }
 
 Recorders.prototype.startRecord = function(config = {}) {
-    const recorder = this.AudioCtx.context.createScriptProcessor(1024, 1, 1)
+    var recorder = this.AudioCtx.context.createScriptProcessor(1024, 1, 1)
     this.AudioCtx.connect(recorder)
     recorder.connect(this.AudioCtx.context.destination)
 
@@ -42,23 +42,23 @@ Recorders.prototype.startRecord = function(config = {}) {
         config: config
     });
 
-    let count = 0, recBuffers = []
+    var count = 0, recBuffers = []
     this.RECWorker.onmessage = (e) =>  {
         if (e.data.command === 'stream') {
-            let buffer = e.data.buffer;
-            let result = new Int16Array(buffer.length);
+            var buffer = e.data.buffer;
+            var result = new Int16Array(buffer.length);
 
-            for (let i = 0; i < buffer.length; i++) {
+            for (var i = 0; i < buffer.length; i++) {
                 result[i] = buffer[i];
             }
 
             count++
             recBuffers.push(result)
             if (recBuffers.length > 0 && count === 6) {
-                let output = recBuffers.splice(0, recBuffers.length)
-                let outputArray = new Int16Array(output.length * 320)
+                var output = recBuffers.splice(0, recBuffers.length)
+                var outputArray = new Int16Array(output.length * 320)
 
-                for (let i = 0; i < output.length; i++) {
+                for (var i = 0; i < output.length; i++) {
                     outputArray.set(output[i], i * 320);
                 }
 
