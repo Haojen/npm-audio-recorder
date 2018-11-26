@@ -10,6 +10,7 @@ function Recorders(stream, config) {
 
 Recorders.prototype.onStreamProcessor = null
 Recorders.prototype.onReceiveAudioBlob = null
+Recorders.prototype.analyserNode = null
 
 Recorders.prototype._gotStream = function(stream) {
   var audioContext = new AudioContext()
@@ -21,7 +22,8 @@ Recorders.prototype._gotStream = function(stream) {
   var analyserNode = audioContext.createAnalyser()
   analyserNode.fftSize = 2048;
   inputPoint.connect(analyserNode);
-
+  this.analyserNode = analyserNode;
+  
   return inputPoint
 }
 
@@ -87,7 +89,7 @@ Recorders.prototype.stopRecord = function() {
   if (this.config.exportAudio && this.config.exportAudio === 'wav') {
     this.RECWorker.postMessage({command: 'exportAudio', type: 'wav'})
   }
-
+  this.analyserNode = null;
   this.Recorder && this.Recorder.disconnect()
 }
 
