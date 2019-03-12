@@ -13,6 +13,7 @@ Recorders.prototype.onReceiveAudioBlob = null
 Recorders.prototype.analyserNode = null
 
 Recorders.prototype._gotStream = function(stream) {
+  var AudioContext = window.audioContext || window.webkitAudioContext;
   var audioContext = new AudioContext()
   var inputPoint = audioContext.createGain()
   var audioInput = audioContext.createMediaStreamSource(stream)
